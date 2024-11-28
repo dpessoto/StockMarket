@@ -1,6 +1,6 @@
 package com.pessoto.stockmarket.core.data.di
 
-import com.zapgroup.olazap.core.BuildConfig
+import com.pessoto.stockmarket.core.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
