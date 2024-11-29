@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "Stock Market"
 include(":app")
 include(":core")
+include(":feature:stocklist")

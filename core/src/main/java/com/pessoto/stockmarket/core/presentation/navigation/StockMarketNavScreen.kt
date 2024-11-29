@@ -1,6 +1,6 @@
 package com.pessoto.stockmarket.core.presentation.navigation
 
 enum class StockMarketNavScreen(val route: String) {
-    LIST_STOCKS("list_stocks_screen"),
-    EDIT_STOCK("edit_stock_screen")
+    STOCK_LIST("stocks_list_screen"),
+    STOCK_DETAIL("stock_detail_screen")
 }

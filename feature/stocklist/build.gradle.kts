@@ -1,29 +1,22 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
 }
 
 android {
-    namespace = "com.pessoto.stockmarket"
+    namespace = "com.pessoto.stockmarket.feature.stockslist"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.pessoto.stockmarket"
         minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -32,10 +25,8 @@ android {
 
         debug {
             isMinifyEnabled = false
-            isDebuggable = true
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
         targetCompatibility = JavaVersion.toVersion(libs.versions.javaVersion.get())
@@ -54,12 +45,6 @@ android {
         kotlinCompilerExtensionVersion = libs.versions.kotlinCompilerExtensionVersion.get()
     }
 
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-
     testOptions {
         animationsDisabled = true
         unitTests.isReturnDefaultValues = true
@@ -73,6 +58,12 @@ dependencies {
 
     implementation(libs.koin.compose)
 
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+
     implementation(project(":core"))
-    implementation(project(":feature:stocklist"))
+
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.coroutines.test)
 }
