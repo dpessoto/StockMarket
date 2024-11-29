@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.pessoto.stockmarket.core.presentation.compose.StockMarketNavigation
+import com.pessoto.stockmarket.presentation.compose.StockMarketNavigation
 import com.pessoto.stockmarket.core.presentation.theme.StockMarketTheme
 
 class MainActivity : ComponentActivity() {

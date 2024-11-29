@@ -1,6 +1,7 @@
 package com.pessoto.stockmarket.core.data.di
 
 import com.pessoto.stockmarket.core.BuildConfig
+import com.pessoto.stockmarket.core.data.remote.interceptor.AuthInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -23,6 +24,7 @@ val coreModuleRemote = module {
 
         OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(AuthInterceptor())
             .connectTimeout(5, TimeUnit.SECONDS)
             .writeTimeout(5, TimeUnit.SECONDS)
             .readTimeout(5, TimeUnit.SECONDS)
