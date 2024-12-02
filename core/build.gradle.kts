@@ -67,6 +67,8 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.navigation.compose)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
 
     implementation(libs.koin.compose)
 

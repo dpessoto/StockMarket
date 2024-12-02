@@ -11,12 +11,7 @@ internal class StocksMapper : Mapper<StocksResponse, List<Stock>> {
             Stock(
                 stock = stock.stock,
                 name = stock.name,
-                close = stock.close,
-                change = stock.change,
-                volume = stock.volume,
-                marketCap = stock.marketCap,
                 logo = stock.logo,
-                type = stock.type
             )
         }
     }

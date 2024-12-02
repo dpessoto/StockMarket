@@ -11,22 +11,12 @@ object StockListHelper {
             StockResponse(
                 stock = "N1TR34",
                 name = "NORTHERN TRUDRN ED",
-                close = 209.42999,
-                change = 0.129083,
-                volume = 5,
-                marketCap = 87580484054.45544,
                 logo = "https://s3-symbol-logo.tradingview.com/northern-trust--big.svg",
-                type = "bdr"
             ),
             StockResponse(
                 stock = "AAPL",
                 name = "Apple Inc.",
-                close = 150.0,
-                change = 1.5,
-                volume = 10000,
-                marketCap = 2500000000000.0,
                 logo = "https://s3-symbol-logo.tradingview.com/apple--big.svg",
-                type = "stock"
             )
         )
     )
@@ -35,22 +25,12 @@ object StockListHelper {
         Stock(
             stock = "N1TR34",
             name = "NORTHERN TRUDRN ED",
-            close = 209.42999,
-            change = 0.129083,
-            volume = 5,
-            marketCap = 87580484054.45544,
             logo = "https://s3-symbol-logo.tradingview.com/northern-trust--big.svg",
-            type = "bdr"
         ),
         Stock(
             stock = "AAPL",
             name = "Apple Inc.",
-            close = 150.0,
-            change = 1.5,
-            volume = 10000,
-            marketCap = 2500000000000.0,
             logo = "https://s3-symbol-logo.tradingview.com/apple--big.svg",
-            type = "stock"
         )
     )
 }
