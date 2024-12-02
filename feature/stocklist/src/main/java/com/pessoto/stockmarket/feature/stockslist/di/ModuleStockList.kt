@@ -12,7 +12,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
-val moduleListPhotos = module {
+val moduleStockList = module {
     factory { get<Retrofit>().create(StockListApi::class.java) }
     factory<StockListRemoteDataSource> { StockListRemoteDataSourceImpl(stockListApi = get()) }
     factory<StockListRepository> {
