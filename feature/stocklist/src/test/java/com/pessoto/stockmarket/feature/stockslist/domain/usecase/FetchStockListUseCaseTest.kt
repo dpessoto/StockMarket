@@ -1,6 +1,6 @@
 package com.pessoto.stockmarket.feature.stockslist.domain.usecase
 
-import com.pessoto.stockmarket.feature.stockslist.domain.entity.Stock
+import com.pessoto.stockmarket.feature.stockslist.domain.exception.EmptyStockListException
 import com.pessoto.stockmarket.feature.stockslist.domain.repository.StockListRepository
 import com.pessoto.stockmarket.feature.stockslist.util.StockListHelper.mockedStockList
 import io.mockk.MockKAnnotations
@@ -9,6 +9,7 @@ import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
 
@@ -27,23 +28,26 @@ class FetchStockListUseCaseTest {
 
     @Test
     fun `invoke returns list of stocks`() = runTest {
+        // GIVEN
         coEvery { repository.fetchStockList() } returns flowOf(mockedStockList)
 
+        // WHEN
         val result = useCase()
 
+        // THEN
         result.collect {
             assertEquals(mockedStockList, it)
         }
     }
 
     @Test
-    fun `invoke with empty list returns empty list`() = runTest {
-        coEvery { repository.fetchStockList() } returns flowOf(emptyList())
+    fun `invoke with empty list throws EmptyStockListException`() = runTest {
+        // GIVEN
+        coEvery { repository.fetchStockList() } throws EmptyStockListException(message = "Empty stock list")
 
-        val result = useCase()
-
-        result.collect {
-            assertEquals(emptyList<Stock>(), it)
+        // WHEN & THEN
+        assertThrows(EmptyStockListException::class.java) {
+                useCase.invoke()
         }
     }
 }

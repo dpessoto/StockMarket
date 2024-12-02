@@ -55,6 +55,9 @@ android {
 dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.navigation.compose)
+    implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
 
     implementation(libs.koin.compose)
 

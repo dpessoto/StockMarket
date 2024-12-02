@@ -1,5 +1,7 @@
 package com.pessoto.stockmarket.core.presentation.theme
 
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 
 // Colors for light mode
