@@ -1,10 +1,11 @@
-package com.pessoto.stockmarket.feature.stockslist.presentation.viewmodel
+package com.pessoto.stockmarket.feature.stockdetail.presentation.viewmodel
 
 import com.pessoto.stockmarket.core.R
 import com.pessoto.stockmarket.core.presentation.viewmodel.UiState
-import com.pessoto.stockmarket.feature.stockslist.domain.exception.EmptyStockListException
-import com.pessoto.stockmarket.feature.stockslist.domain.usecase.FetchStockListUseCase
-import com.pessoto.stockmarket.feature.stockslist.util.StockListHelper.mockedStockList
+import com.pessoto.stockmarket.feature.stockdetail.domain.exception.StockDetailNotFoundException
+import com.pessoto.stockmarket.feature.stockdetail.domain.usecase.FetchStockDetailUseCase
+import com.pessoto.stockmarket.feature.stockdetail.presention.viewmodel.StockDetailViewModel
+import com.pessoto.stockmarket.feature.stockdetail.util.StockDetailHelper.mockedStockDetail
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -21,65 +22,76 @@ import org.junit.Test
 import java.io.IOException
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class StockListViewModelTest {
+class StockDetailViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
     @MockK
-    private lateinit var fetchStockListUseCase: FetchStockListUseCase
-    private lateinit var viewModel: StockListViewModel
+    private lateinit var fetchStockDetailUseCase: FetchStockDetailUseCase
+    private lateinit var viewModel: StockDetailViewModel
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        viewModel = StockListViewModel(fetchStockListUseCase, testDispatcher)
+        viewModel = StockDetailViewModel(fetchStockDetailUseCase, testDispatcher)
         Dispatchers.setMain(testDispatcher)
     }
 
     @Test
     fun `fetch stock list updates UI state on success`() = runTest {
         // Given
-        coEvery { fetchStockListUseCase.invoke() } returns flow { emit(mockedStockList) }
+        coEvery { fetchStockDetailUseCase.invoke("AAPL") } returns flow { emit(mockedStockDetail) }
 
         // When
-        viewModel.fetchStockList()
+        viewModel.fetchStockDetail("AAPL")
         advanceUntilIdle()
 
         // Then
-        val expectedState = UiState.Success(mockedStockList)
+        val expectedState = UiState.Success(mockedStockDetail)
         assertEquals(expectedState, viewModel.uiState.value)
     }
 
     @Test
     fun `fetch stock list updates UI state on network error`() = runTest {
-        coEvery { fetchStockListUseCase.invoke() } returns flow { throw IOException("Network Error") }
+        // Given
+        coEvery { fetchStockDetailUseCase.invoke("MSFT") } returns flow { throw IOException("Network Error") }
 
-        viewModel.fetchStockList()
+        // When
+        viewModel.fetchStockDetail("MSFT")
         advanceUntilIdle()
 
+        // Then
         val expectedState = UiState.Error(R.string.network_error)
         assertEquals(expectedState, viewModel.uiState.value)
     }
 
     @Test
     fun `fetch stock list updates UI state on unexpected error`() = runTest {
-        coEvery { fetchStockListUseCase.invoke() } returns flow { throw Exception("Unexpected Error") }
+        // Given
+        coEvery { fetchStockDetailUseCase.invoke("AMZN") } returns flow { throw Exception("Unexpected Error") }
 
-        viewModel.fetchStockList()
+        // When
+        viewModel.fetchStockDetail("AMZN")
         advanceUntilIdle()
 
+        // Then
         val expectedState = UiState.Error(R.string.unexpected_error)
         assertEquals(expectedState, viewModel.uiState.value)
     }
 
     @Test
     fun `fetch stock list updates UI state on empty list error`() = runTest {
-        coEvery { fetchStockListUseCase.invoke() } returns flow { throw EmptyStockListException() }
+        // Given
+        coEvery { fetchStockDetailUseCase.invoke("GOOG") } returns flow {
+            throw StockDetailNotFoundException()
+        }
 
-        viewModel.fetchStockList()
+        // When
+        viewModel.fetchStockDetail("GOOG")
         advanceUntilIdle()
 
-        val expectedState = UiState.Error(R.string.empty_stock_list_error)
+        // Then
+        val expectedState = UiState.Error(R.string.stock_detail_not_found_error)
         assertEquals(expectedState, viewModel.uiState.value)
     }
 }

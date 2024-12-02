@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.pessoto.stockmarket.core.presentation.navigation.LocalNavController
 import com.pessoto.stockmarket.core.presentation.navigation.StockMarketNavScreen
+import com.pessoto.stockmarket.feature.stockdetail.presention.compose.StockDetailScreen
 import com.pessoto.stockmarket.feature.stockslist.presentation.compose.StockListScreen
 
 @Composable
@@ -21,6 +22,12 @@ internal fun StockMarketNavigation(modifier: Modifier) {
         ) {
             composable(StockMarketNavScreen.STOCK_LIST.route) {
                 StockListScreen(modifier = modifier)
+            }
+            composable("${StockMarketNavScreen.STOCK_DETAIL.route}{ticker}") { navBackStackEntry ->
+                val ticker = navBackStackEntry.arguments?.getString("ticker")
+                ticker?.let {
+                    StockDetailScreen(modifier = modifier, ticker = it)
+                }
             }
         }
     }

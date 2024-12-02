@@ -18,7 +18,7 @@ internal class StockListRepositoryImpl(
         return flow {
             val stocksResponse = remoteDataSource.fetchStockList()
             if (stocksResponse.stocks.isEmpty()) {
-                throw EmptyStockListException("The stock list is empty.")
+                throw EmptyStockListException()
             }
             emit(mapper.map(stocksResponse))
         }

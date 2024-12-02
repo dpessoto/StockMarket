@@ -3,4 +3,7 @@
     <string name="unexpected_error">An unexpected error occurred. Please try again.</string>
     <string name="try_again">Try Again</string>
     <string name="empty_stock_list_error">The stock list is empty.</string>
+    <string name="stock_detail_not_found_error">Could not obtain data for the selected stock</string>
+    <string name="no_data_available">No data available for the chart at the moment.</string>
+    <string name="image_load_failed">Failed to load image</string>
 </resources>

@@ -8,7 +8,7 @@ internal interface StockListApi {
 
     @GET("api/quote/list")
    suspend fun fetchStockList(
-        @Query("limit") limit: String = "10",
+        @Query("limit") limit: String = "20",
         @Query("type") type: String = "stock",
     ): StocksResponse
 }

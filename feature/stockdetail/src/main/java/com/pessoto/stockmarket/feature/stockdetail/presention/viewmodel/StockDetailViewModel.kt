@@ -1,12 +1,13 @@
-package com.pessoto.stockmarket.feature.stockslist.presentation.viewmodel
+package com.pessoto.stockmarket.feature.stockdetail.presention.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pessoto.stockmarket.core.R
 import com.pessoto.stockmarket.core.presentation.viewmodel.UiState
-import com.pessoto.stockmarket.feature.stockslist.domain.entity.Stock
-import com.pessoto.stockmarket.feature.stockslist.domain.exception.EmptyStockListException
-import com.pessoto.stockmarket.feature.stockslist.domain.usecase.FetchStockListUseCase
+import com.pessoto.stockmarket.feature.stockdetail.domain.entity.StockDetail
+import com.pessoto.stockmarket.feature.stockdetail.domain.exception.StockDetailNotFoundException
+import com.pessoto.stockmarket.feature.stockdetail.domain.usecase.FetchStockDetailUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,39 +15,39 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import okio.IOException
+import java.io.IOException
 
-class StockListViewModel(
-    private val fetchStockListUseCase: FetchStockListUseCase,
+class StockDetailViewModel(
+    private val fetchStockDetailUseCase: FetchStockDetailUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<UiState<List<Stock>>>(UiState.Loading)
-    val uiState: StateFlow<UiState<List<Stock>>> = _uiState
+    private val _uiState = MutableStateFlow<UiState<StockDetail>>(UiState.Loading)
+    val uiState: StateFlow<UiState<StockDetail>> = _uiState
 
-    fun fetchStockList() {
+    fun fetchStockDetail(ticker: String) {
         viewModelScope.launch(dispatcher) {
-            fetchStockListUseCase.invoke()
+            fetchStockDetailUseCase.invoke(ticker)
                 .onStart {
                     _uiState.value = UiState.Loading
                 }
                 .catch { error ->
                     handleError(error)
                 }
-                .collect { stocks ->
-                    handleSuccess(stocks)
+                .collect { stock ->
+                    handleSuccess(stock)
                 }
         }
     }
 
-    private fun handleSuccess(stocks: List<Stock>) {
+    private fun handleSuccess(stocks: StockDetail) {
         _uiState.value = UiState.Success(stocks)
     }
 
     private fun handleError(error: Throwable) {
         val errorMessage = when (error) {
-            is EmptyStockListException -> {
-                R.string.empty_stock_list_error
+            is StockDetailNotFoundException -> {
+                R.string.stock_detail_not_found_error
             }
 
             is IOException -> {

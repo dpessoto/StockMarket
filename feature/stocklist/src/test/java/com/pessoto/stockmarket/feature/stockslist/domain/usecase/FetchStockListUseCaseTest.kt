@@ -43,7 +43,7 @@ class FetchStockListUseCaseTest {
     @Test
     fun `invoke with empty list throws EmptyStockListException`() = runTest {
         // GIVEN
-        coEvery { repository.fetchStockList() } throws EmptyStockListException(message = "Empty stock list")
+        coEvery { repository.fetchStockList() } throws EmptyStockListException()
 
         // WHEN & THEN
         assertThrows(EmptyStockListException::class.java) {
