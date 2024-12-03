@@ -94,4 +94,58 @@ class StockDetailViewModelTest {
         val expectedState = UiState.Error(R.string.stock_detail_not_found_error)
         assertEquals(expectedState, viewModel.uiState.value)
     }
+
+    @Test
+    fun `fetch stock detail with range updates chart loading state`() = runTest {
+        // Given
+        coEvery { fetchStockDetailUseCase.invoke("AAPL", "1d") } returns flow { emit(mockedStockDetail) }
+
+        // When
+        viewModel.fetchStockDetail("AAPL", "1d")
+        advanceUntilIdle()
+
+        // Then
+        assertEquals(false, viewModel.chartLoading.value)
+    }
+
+    @Test
+    fun `fetch stock detail with range updates chart error state on network error`() = runTest {
+        // Given
+        coEvery { fetchStockDetailUseCase.invoke("MSFT", "1d") } returns flow { throw IOException("Network Error") }
+
+        // When
+        viewModel.fetchStockDetail("MSFT", "1d")
+        advanceUntilIdle()
+
+        // Then
+        assertEquals(R.string.network_error, viewModel.chartError.value)
+    }
+
+    @Test
+    fun `fetch stock detail with range updates chart error state on unexpected error`() = runTest {
+        // Given
+        coEvery { fetchStockDetailUseCase.invoke("AMZN", "1d") } returns flow { throw Exception("Unexpected Error") }
+
+        // When
+        viewModel.fetchStockDetail("AMZN", "1d")
+        advanceUntilIdle()
+
+        // Then
+        assertEquals(R.string.unexpected_error, viewModel.chartError.value)
+    }
+
+    @Test
+    fun `fetch stock detail with range updates chart error state on empty list error`() = runTest {
+        // Given
+        coEvery { fetchStockDetailUseCase.invoke("GOOG", "1d") } returns flow {
+            throw StockDetailNotFoundException()
+        }
+
+        // When
+        viewModel.fetchStockDetail("GOOG", "1d")
+        advanceUntilIdle()
+
+        // Then
+        assertEquals(R.string.stock_detail_not_found_error, viewModel.chartError.value)
+    }
 }

@@ -4,5 +4,5 @@ import com.pessoto.stockmarket.feature.stockdetail.data.model.StockDetailResultR
 
 internal interface StockDetailRemoteDataSource {
 
-    suspend fun fetchStockDetail(ticker: String): StockDetailResultResponse
+    suspend fun fetchStockDetail(ticker: String, range: String): StockDetailResultResponse
 }

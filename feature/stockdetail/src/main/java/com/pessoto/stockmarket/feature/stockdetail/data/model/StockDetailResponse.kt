@@ -9,5 +9,6 @@ data class StockDetailResponse(
     @SerializedName("regularMarketTime") val regularMarketTime: String,
     @SerializedName("regularMarketPrice") val regularMarketPrice: Double,
     @SerializedName("logourl") val logourl: String,
+    @SerializedName("usedRange") val usedRange: String,
     @SerializedName("historicalDataPrice") val historicalDataPrice: List<HistoricalDataPriceResponse>? = null
 )

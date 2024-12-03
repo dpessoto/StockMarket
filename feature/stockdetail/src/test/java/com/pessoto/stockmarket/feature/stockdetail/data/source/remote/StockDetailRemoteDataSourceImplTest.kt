@@ -27,13 +27,14 @@ class StockDetailRemoteDataSourceImplTest {
     fun `fetchStockDetail emits data from api`() = runTest {
         // Given
         val ticker = "PETR4"
-        coEvery { api.fetchStockDetail(ticker) } returns mockedStockDetailResultResponse
+        val range = "1d"
+        coEvery { api.fetchStockDetail(ticker, range) } returns mockedStockDetailResultResponse
 
         // When
-        val result = remoteDataSource.fetchStockDetail(ticker)
+        val result = remoteDataSource.fetchStockDetail(ticker, range)
 
         // Then
         assert(result == mockedStockDetailResultResponse)
-        coVerify { api.fetchStockDetail(ticker) }
+        coVerify { api.fetchStockDetail(ticker, range) }
     }
 }

@@ -15,6 +15,7 @@ object StockDetailHelper {
         regularMarketTime = "2023-11-17T21:07:47.000Z",
         regularMarketPrice = 36.71,
         logourl = "https://s3-symbol-logo.tradingview.com/brasileiro-petrobras--big.svg",
+        usedRange = "1d",
         historicalDataPrice = listOf(
             HistoricalDataPriceResponse(
                 date = 1699621200,
@@ -46,6 +47,7 @@ object StockDetailHelper {
         regularMarketTime = mockedStockDetailResponse.regularMarketTime,
         regularMarketPrice = mockedStockDetailResponse.regularMarketPrice,
         logourl = mockedStockDetailResponse.logourl,
+        usedRange = mockedStockDetailResponse.usedRange,
         historicalDataPrice = mockedStockDetailResponse.historicalDataPrice?.map {
             HistoricalDataPrice(
                 date = it.date,

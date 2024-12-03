@@ -36,28 +36,30 @@ class StockDetailRepositoryImplTest {
     fun `fetchStockDetail returns mapped stock detail`() = runTest {
         // GIVEN
         val ticker = "PETR4"
-        coEvery { remoteDataSource.fetchStockDetail(ticker) } returns mockedStockDetailResultResponse
+        val range = "1d"
+        coEvery { remoteDataSource.fetchStockDetail(ticker, range) } returns mockedStockDetailResultResponse
 
         // WHEN
-        val result = repository.fetchStockDetail(ticker)
+        val result = repository.fetchStockDetail(ticker, range)
 
         // THEN
         result.collect { stockDetail ->
             assertEquals(mapper.map(mockedStockDetailResultResponse.results[0]), stockDetail)
         }
-        coVerify { remoteDataSource.fetchStockDetail(ticker) }
+        coVerify { remoteDataSource.fetchStockDetail(ticker, range) }
     }
 
     @Test
     fun `fetchStockDetail empty response throws StockDetailNotFoundException`() = runTest {
         // GIVEN
         val ticker = "PETR4"
-        coEvery { remoteDataSource.fetchStockDetail(ticker) } returns StockDetailResultResponse(
+        val range = "1d"
+        coEvery { remoteDataSource.fetchStockDetail(ticker, range) } returns StockDetailResultResponse(
             emptyList()
         )
 
         // WHEN
-        val result = repository.fetchStockDetail(ticker)
+        val result = repository.fetchStockDetail(ticker, range)
 
         // THEN
         assertThrows(StockDetailNotFoundException::class.java) {

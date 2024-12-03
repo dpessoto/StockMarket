@@ -6,8 +6,8 @@ import com.pessoto.stockmarket.feature.stockdetail.data.model.StockDetailResultR
 internal class StockDetailRemoteDataSourceImpl(private val stockDetailApi: StockDetailApi) :
     StockDetailRemoteDataSource {
 
-    override suspend fun fetchStockDetail(ticker: String): StockDetailResultResponse {
+    override suspend fun fetchStockDetail(ticker: String, range: String): StockDetailResultResponse {
 
-        return stockDetailApi.fetchStockDetail(ticker)
+        return stockDetailApi.fetchStockDetail(ticker, range)
     }
 }
