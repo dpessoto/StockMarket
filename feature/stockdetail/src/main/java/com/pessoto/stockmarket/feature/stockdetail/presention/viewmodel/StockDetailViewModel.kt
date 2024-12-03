@@ -1,6 +1,5 @@
 package com.pessoto.stockmarket.feature.stockdetail.presention.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pessoto.stockmarket.core.R
@@ -25,6 +24,12 @@ class StockDetailViewModel(
     private val _uiState = MutableStateFlow<UiState<StockDetail>>(UiState.Loading)
     val uiState: StateFlow<UiState<StockDetail>> = _uiState
 
+    private val _chartLoading = MutableStateFlow(false)
+    val chartLoading: StateFlow<Boolean> = _chartLoading
+
+    private val _chartError = MutableStateFlow<Int?>(null)
+    val chartError: StateFlow<Int?> = _chartError
+
     fun fetchStockDetail(ticker: String) {
         viewModelScope.launch(dispatcher) {
             fetchStockDetailUseCase.invoke(ticker)
@@ -35,30 +40,48 @@ class StockDetailViewModel(
                     handleError(error)
                 }
                 .collect { stock ->
-                    handleSuccess(stock)
+                    handleStockSuccess(stock)
                 }
         }
     }
 
-    private fun handleSuccess(stocks: StockDetail) {
+    fun fetchStockDetail(ticker: String, range: String) {
+        viewModelScope.launch(dispatcher) {
+            fetchStockDetailUseCase.invoke(ticker, range)
+                .onStart {
+                    _chartLoading.value = true
+                    _chartError.value = null
+                }
+                .catch { error ->
+                    handleChartError(error)
+                }
+                .collect { stock ->
+                    _chartLoading.value = false
+                    _chartError.value = null
+                    handleStockSuccess(stock)
+                }
+        }
+    }
+
+    private fun handleStockSuccess(stocks: StockDetail) {
         _uiState.value = UiState.Success(stocks)
     }
 
     private fun handleError(error: Throwable) {
-        val errorMessage = when (error) {
-            is StockDetailNotFoundException -> {
-                R.string.stock_detail_not_found_error
-            }
+        _chartLoading.value = false
+        _uiState.value = UiState.Error(getErrorMessage(error))
+    }
 
-            is IOException -> {
-                R.string.network_error
-            }
+    private fun handleChartError(error: Throwable) {
+        _chartLoading.value = false
+        _chartError.value = getErrorMessage(error)
+    }
 
-            else -> {
-                R.string.unexpected_error
-            }
+    private fun getErrorMessage(error: Throwable): Int {
+        return when (error) {
+            is StockDetailNotFoundException -> R.string.stock_detail_not_found_error
+            is IOException -> R.string.network_error
+            else -> R.string.unexpected_error
         }
-
-        _uiState.value = UiState.Error(errorMessage)
     }
 }

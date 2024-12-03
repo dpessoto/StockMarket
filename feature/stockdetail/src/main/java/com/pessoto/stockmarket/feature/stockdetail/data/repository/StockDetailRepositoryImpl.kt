@@ -13,10 +13,10 @@ internal class StockDetailRepositoryImpl(
     private val mapper: StockDetailMapper
 ) : StockDetailRepository {
 
-    override fun fetchStockDetail(ticker: String): Flow<StockDetail> {
+    override fun fetchStockDetail(ticker: String, range: String): Flow<StockDetail> {
 
         return flow {
-            val result = remoteDataSource.fetchStockDetail(ticker)
+            val result = remoteDataSource.fetchStockDetail(ticker, range)
 
             if (result.results.isEmpty()) {
                 throw StockDetailNotFoundException()

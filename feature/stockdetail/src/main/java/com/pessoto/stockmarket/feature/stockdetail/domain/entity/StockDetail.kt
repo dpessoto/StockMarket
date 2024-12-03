@@ -7,5 +7,6 @@ data class StockDetail(
     val regularMarketTime: String,
     val regularMarketPrice: Double,
     val logourl: String,
+    val usedRange: String,
     val historicalDataPrice: List<HistoricalDataPrice>?
 )
