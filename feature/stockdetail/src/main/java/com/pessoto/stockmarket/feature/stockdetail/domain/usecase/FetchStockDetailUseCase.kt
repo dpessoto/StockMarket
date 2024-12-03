@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 class FetchStockDetailUseCase(private val repository: StockDetailRepository) {
 
-    operator fun invoke(ticker: String): Flow<StockDetail> {
-        return repository.fetchStockDetail(ticker)
+    operator fun invoke(ticker: String, range: String = "3mo"): Flow<StockDetail> {
+        return repository.fetchStockDetail(ticker, range)
     }
 }

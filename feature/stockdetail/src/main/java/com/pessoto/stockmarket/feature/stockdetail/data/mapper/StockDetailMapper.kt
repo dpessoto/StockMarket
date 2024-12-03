@@ -16,6 +16,7 @@ class StockDetailMapper : Mapper<StockDetailResponse, StockDetail> {
             regularMarketTime = source.regularMarketTime,
             regularMarketPrice = source.regularMarketPrice,
             logourl = source.logourl,
+            usedRange = source.usedRange,
             historicalDataPrice = source.historicalDataPrice?.mapHistoricalDataPrice()
         )
     }

@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface StockDetailRepository {
 
-    fun fetchStockDetail(ticker: String): Flow<StockDetail>
+    fun fetchStockDetail(ticker: String, range: String): Flow<StockDetail>
 }

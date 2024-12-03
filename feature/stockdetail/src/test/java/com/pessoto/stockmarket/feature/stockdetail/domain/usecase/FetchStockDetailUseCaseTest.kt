@@ -29,7 +29,8 @@ class FetchStockDetailUseCaseTest {
     fun `invoke returns stock detail`() = runTest {
         // GIVEN
         val ticker = "PETR4"
-        coEvery { repository.fetchStockDetail(ticker) } returns flowOf(mockedStockDetail)
+        val range = "3mo"
+        coEvery { repository.fetchStockDetail(ticker, range) } returns flowOf(mockedStockDetail)
 
         // WHEN
         val result = useCase(ticker)

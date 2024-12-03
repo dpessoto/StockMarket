@@ -10,7 +10,7 @@ internal interface StockDetailApi {
     @GET("api/quote/{tickers}")
     suspend fun fetchStockDetail(
         @Path("tickers") tickers: String,
-        @Query("range") range: String = "1mo",
+        @Query("range") range: String = "3mo",
         @Query("interval") interval: String = "1d",
     ): StockDetailResultResponse
 }
